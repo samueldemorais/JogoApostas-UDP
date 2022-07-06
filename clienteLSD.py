@@ -56,7 +56,7 @@ def recebimento():
 
         if mensagem_servidor[0] == "SAIR":
             print(f"{YELLOW}Obrigado por jogar com a gente :){RESET}")
-            sys.exit()
+            break
         if mensagem_servidor[0] == "ERROR DEBORA":
             print(f"{YELLOW}Não há apostadores suficentes{RESET}")
 
@@ -91,14 +91,18 @@ def envio():
             command = mensagem[0].upper()
             if command == "CAD":
                 cadastrar(mensagem[1])
-            if command == "SAIR":
+            elif command == "SAIR":
                 udp.sendto(msg.encode(), servidor)
                 sys.exit()
 
-            else:
-                udp.sendto(msg.encode(), servidor)
+        elif command != "CAD" and command != "SAIR" and command != "":
+            udp.sendto(msg.encode(), servidor)
+
         else: 
             print('Digite algum comando')
+    
+        
+
 
 
 HOST = '127.0.0.1'

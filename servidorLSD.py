@@ -35,9 +35,9 @@ def cadastrar(dados, cliente):
     print(dinheiro)
     print(nomes)
     print(pontos)
-    if usuario.nome in nomes:
-        resposta = "OK LEONIDAS"
-        udp.sendto(resposta.encode(), cliente)
+    
+    OK = "OK LEONIDAS"
+    udp.sendto(OK.encode(), cliente)
     print(clientes)
     
         
@@ -100,19 +100,28 @@ def reset():
     resposta = "OK JUNIOR"
     udp.sendto(resposta.encode(), cliente)
 
+def sair(cliente):
+    i = clientes.index(cliente)
+    clientes.pop(i)
+    print(clientes)
+    udp.sendto(resposta.encode(), cliente)
+    print("clientes conectados:", clientes)
 
-
+def erro():
+    resposta = "ERROR LOUISE"
+    udp.sendto(resposta.encode(), cliente)
 
 #PROTOCO LSD(Louise, Samuel e Debora)
 while True:
+    resposta =  " "
     msg, cliente = udp.recvfrom(1024)
     print('Recebi do cliente ', cliente, msg.decode())
     tokens = msg.decode().upper().split()
     command = tokens[0]
+
     if command == "SAIR":
         resposta = "SAIR"
-        udp.sendto(resposta.encode(), cliente)
-        break
+        saida = sair(cliente)
             
     elif command == "PLAY":
         game =  jogar()
@@ -125,8 +134,8 @@ while True:
 
     elif command == "DADOS":
         cadastro = cadastrar(" ".join(tokens[1:]), cliente)
+        
     else:
-       resposta =  "ERROR LOUISE"
-       udp.sendto(resposta.encode(), cliente)
+        invalido = erro()
 
 udp.close()
